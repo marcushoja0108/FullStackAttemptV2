@@ -44,4 +44,12 @@ app.MapDelete("profiles/{id}", async (int id) =>
     return Results.Ok(rowsAffected);
 });
 
+app.MapPut("profiles/{id}", async (int id, Profile updatedProfile) =>
+{
+    var sql = "UPDATE Profiles SET Name = @Name, Age = @Age, Country = @Country WHERE Id = @Id";
+    var conn = new SqlConnection(connStr);
+    var rowsAffected = await conn.ExecuteAsync(sql, new {Id = id, updatedProfile.Name , updatedProfile.Age, updatedProfile.Country});
+    return rowsAffected;
+});
+
 app.Run();
